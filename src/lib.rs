@@ -6,7 +6,7 @@
 use std::cmp::Ordering;
 
 /// Describes value used by `allowed` and `preferred` vectors.
-#[ derive( PartialEq ) ]
+#[ derive( PartialEq, Eq ) ]
 pub enum Value 
 {
     /// For `allowed` cancels filtering of `avaliable` vector.
