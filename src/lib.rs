@@ -26,7 +26,32 @@ fn reduce_by_allowed(original: &Vec<i32>, allowed: &Vec<Value>) -> Vec<i32> {
 }
 
 fn reduce_by_preferred(original: &Vec<i32>, preferred: &Vec<Value>) -> Vec<i32> {
-    todo!()
+    let mut o_pointer = 0;
+    let mut p_pointer = 0;
+    let mut vec: Vec<i32> = vec![];
+    while o_pointer < original.len() && p_pointer < preferred.len() {
+        if let Value::Number(num) = &preferred[p_pointer] {
+            match original[o_pointer].cmp(num) {
+                Ordering::Less => {
+                    o_pointer += 1;
+                    if o_pointer >= original.len() {
+                        vec.push(original[o_pointer - 1])
+                    }
+                }
+                Ordering::Greater => {
+                    vec.push(original[o_pointer]);
+                    p_pointer += 1;
+                }
+                Ordering::Equal => {
+                    vec.push(original[o_pointer]);
+                    o_pointer += 1;
+                    p_pointer += 1;
+                }
+            }
+        }
+    }
+
+    vec
 }
 
 pub fn attempt(available: &Vec<i32>, allowed: &Vec<Value>, preferred: &Vec<Value>) -> Vec<i32> {
