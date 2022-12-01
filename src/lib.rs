@@ -1,5 +1,6 @@
 use std::cmp::Ordering;
 
+#[derive(PartialEq)]
 pub enum Value {
     Any,
     Number(i32),
@@ -55,7 +56,17 @@ fn reduce_by_preferred(original: &Vec<i32>, preferred: &Vec<Value>) -> Vec<i32> 
 }
 
 pub fn attempt(available: &Vec<i32>, allowed: &Vec<Value>, preferred: &Vec<Value>) -> Vec<i32> {
-    todo!()
+    if allowed.contains(&Value::Any) && preferred.contains(&Value::Any) {
+        return available.to_vec();
+    }
+    if allowed.contains(&Value::Any) {
+        return reduce_by_preferred(available, preferred);
+    }
+    if preferred.contains(&Value::Any) {
+        return reduce_by_allowed(available, allowed);
+    }
+    let available = &reduce_by_allowed(available, allowed);
+    reduce_by_preferred(available, preferred)
 }
 
 #[cfg(test)]
