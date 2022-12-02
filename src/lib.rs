@@ -41,35 +41,34 @@ fn reduce_by_allowed( original : &Vec< i32 >, allowed : &Vec< Value > ) -> Vec< 
 /// Returns vector with values that closest to `preferred` values.
 fn reduce_by_preferred( original : &Vec< i32 >, preferred : &Vec< Value > ) -> Vec< i32 > 
 {
-    let mut o_pointer = 0;
-    let mut p_pointer = 0;
+    if original.is_empty()
+    {
+        return vec![];
+    }
     let mut vec : Vec< i32 > = vec![];
-    while o_pointer < original.len() && p_pointer < preferred.len() {
-        if let Value::Number( num ) = &preferred[ p_pointer ] {
-            match original[ o_pointer ].cmp( num ) {
-                Ordering::Less => 
+    for value in preferred 
+    {
+        if let Value::Number( num ) = value
+        {
+            match original.binary_search( num ) 
+            {
+                Ok( _ ) => vec.push( *num ),
+                Err( index ) => 
                 {
-                    o_pointer += 1;
-                    if o_pointer >= original.len() 
+                    if index == original.len()
                     {
-                        vec.push( original[ o_pointer - 1 ] )
+                        vec.push( original[ index - 1 ] );
                     }
-                }
-                Ordering::Greater => 
-                {
-                    vec.push( original[ o_pointer ] );
-                    p_pointer += 1;
-                }
-                Ordering::Equal => 
-                {
-                    vec.push( original[ o_pointer ] );
-                    o_pointer += 1;
-                    p_pointer += 1;
+                    else if index < original.len()
+                    {
+                        vec.push( original[ index ] );
+                    }
                 }
             }
         }
     }
 
+    vec.dedup();
     vec
 }
 
