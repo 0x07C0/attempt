@@ -22,23 +22,14 @@ pub enum Value
 /// Returns vector with values both `original` and `allowed` have.
 fn reduce_by_allowed( original : &Vec< i32 >, allowed : &Vec< Value > ) -> Vec< i32 > 
 {
-    let mut o_pointer = 0;
-    let mut a_pointer = 0;
     let mut vec : Vec< i32 > = vec![];
-    while o_pointer < original.len() && a_pointer < allowed.len() 
+    for value in allowed 
     {
-        if let Value::Number( num ) = &allowed[ a_pointer ]
+        if let Value::Number( num ) = value
         {
-            match original[ o_pointer ].cmp( num )
+            if let Ok( _ ) = original.binary_search( num ) 
             {
-                Ordering::Less => o_pointer += 1,
-                Ordering::Greater => a_pointer += 1,
-                Ordering::Equal =>
-                {
-                    vec.push( original[ o_pointer ] );
-                    o_pointer += 1;
-                    a_pointer += 1;
-                }
+                vec.push( *num )
             }
         }
     }
