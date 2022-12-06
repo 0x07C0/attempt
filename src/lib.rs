@@ -3,8 +3,6 @@
 //! Provides the `attempt` function which returns a vector of
 //! values filtered by parameters
 
-use std::cmp::Ordering;
-
 /// Describes value used by `allowed` and `preferred` vectors.
 #[ derive( PartialEq, Eq ) ]
 pub enum Value 
@@ -164,8 +162,7 @@ mod tests
 
     assert_eq!
     (
-      reduce_by_allowed
-      ( &vec![ 240 ], &vec![ Value::Number( 360 ), Value::Number( 720 ) ] ),
+      reduce_by_allowed( &vec![ 240 ], &vec![ Value::Number( 360 ), Value::Number( 720 ) ] ),
       vec![]
     );
   }
@@ -175,15 +172,13 @@ mod tests
   {
     assert_eq!
     (
-      reduce_by_preferred
-      ( &vec![ 240, 360, 720 ], &vec![ Value::Number( 360 ) ] ),
+      reduce_by_preferred( &vec![ 240, 360, 720 ], &vec![ Value::Number( 360 ) ] ),
       vec![ 360 ]
     );
 
     assert_eq!
     (
-      reduce_by_preferred
-      ( &vec![ 360, 720 ], &vec![ Value::Number( 1080 ) ] ),
+      reduce_by_preferred( &vec![ 360, 720 ], &vec![ Value::Number( 1080 ) ] ),
       vec![ 720 ]
     );
 
@@ -217,8 +212,7 @@ mod tests
   }
 
   #[ test ]
-  fn test_attempt
-      () 
+  fn test_attempt() 
   {
     assert_eq!
     (
@@ -255,7 +249,8 @@ mod tests
       attempt
       (
         &vec![ 240, 360, 720 ],
-        &vec![
+        &vec!
+        [
           Value::Number( 240 ),
           Value::Number( 360 ),
           Value::Number( 720 ),
@@ -270,7 +265,8 @@ mod tests
       attempt
       (
         &vec![ 240, 720 ],
-        &vec![
+        &vec!
+        [
           Value::Number( 240 ),
           Value::Number( 360 ),
           Value::Number( 720 ),
@@ -357,8 +353,7 @@ mod tests
     );
     assert_eq!
     (
-      attempt
-      ( &vec![ 240, 360, 720 ], &vec![ Value::Any ], &vec![ Value::Any ] ),
+      attempt( &vec![ 240, 360, 720 ], &vec![ Value::Any ], &vec![ Value::Any ] ),
       vec![ 240, 360, 720 ]
     );
   }
